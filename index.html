@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#11261c">
 <title>TecnologizApp · Demo Canchas · Fútbol 5, 6, 7 y pádel</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Canchas">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -241,6 +248,22 @@ body.cli main{max-width:520px}
 @media (max-width:640px){.cajal .cd{white-space:normal;overflow:visible}.cajal .cd .pill{display:none}}
 
 body.solo-fijo #who,body.solo-fijo .realnote,body.solo-fijo .flag,body.solo-fijo .genbar,body.solo-fijo .hero-r{display:none!important}
+/* agregar al inicio */
+.instbar{position:fixed;left:12px;right:12px;bottom:12px;z-index:40;max-width:496px;margin:0 auto;background:#0B1A13;color:#ECF5EF;border-radius:16px;padding:10px 10px 10px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 0 0 2px #C8F53C,0 12px 30px rgba(0,0,0,.45)}
+.instbar[hidden],body:not(.cli) .instbar{display:none}
+.instbar img{width:42px;height:42px;flex:none;border-radius:10px}
+.instbar div{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.instbar div b{font-size:14px}.instbar div span{font-size:12px;color:#A3B8AB}
+.instbar .go{appearance:none;border:0;background:#C8F53C;color:#0B1A13;font-weight:800;border-radius:10px;padding:0 14px;min-height:44px;cursor:pointer;font-family:inherit}
+.instbar .x{appearance:none;border:0;background:none;color:#A3B8AB;font-size:22px;width:36px;min-height:44px;cursor:pointer}
+body.cli main{padding-bottom:110px}
+.igl{list-style:none;margin:6px 0 4px;padding:0;display:flex;flex-direction:column;gap:10px}
+.igl li{display:flex;align-items:center;gap:10px;font-size:14px}
+.ign{width:24px;height:24px;border-radius:50%;background:#C8F53C;color:#0B1A13;display:grid;place-items:center;font-weight:800;font-size:12px;flex:none}
+.igi{width:40px;height:40px;border-radius:10px;background:#fff;border:1.5px solid #24463a;display:grid;place-items:center;flex:none;color:#0A66D8;font-size:13px}
+.igarrow{text-align:center;font-size:34px;color:#C8F53C;animation:igb 1.2s ease-in-out infinite}
+@keyframes igb{50%{transform:translateY(6px)}}
+@media (prefers-reduced-motion:reduce){.igarrow{animation:none}}
 
 </style>
 
@@ -283,6 +306,8 @@ body.solo-fijo #who,body.solo-fijo .realnote,body.solo-fijo .flag,body.solo-fijo
 <main id="app"></main>
 <div class="modal-bg" id="modal" role="dialog" aria-modal="true" aria-label="Ventana"><div id="modal-body"></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="instbar" id="instbar" hidden><img src="icon-192.png" alt=""><div><b>Agregala a tu inicio</b><span>No ocupa lugar: es un acceso directo. Se actualiza sola, sin descargas.</span></div><button class="go" data-inst="go">Agregar</button><button class="x" data-inst="no" aria-label="Ahora no">×</button></div>
+<div class="modal-bg" id="instguide" role="dialog" aria-modal="true" aria-label="Agregar al inicio"><div class="sheet" id="instgbody"></div></div>
 <script>
 (()=>{'use strict';
 /* ---------- utilidades ---------- */
@@ -652,6 +677,49 @@ if(SOLO){S.rol='cliente';S.view=null;document.body.classList.add('solo-fijo');}
 render();
 
 })();
+</script>
+<script>
+(function(){
+'use strict';
+var ua=navigator.userAgent||'';
+var isIOS=/iPhone|iPad|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+var isAndroid=/Android/.test(ua);
+var inApp=/Instagram|FBAN|FBAV|FB_IAB|Line\/|MicroMessenger|TikTok|; wv\)/.test(ua);
+var standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+var K='canchas-inst-dismiss',deferred=null;
+var bar=document.getElementById('instbar'),guide=document.getElementById('instguide'),gbody=document.getElementById('instgbody');
+function dismissed(){try{return localStorage.getItem(K)==='1';}catch(e){return false;}}
+function show(){bar.hidden=standalone||dismissed();}
+var SHARE='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/></svg>';
+var PLUS='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg>';
+var DOTS='<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>';
+function step(n,ic,t){return '<li><span class="ign">'+n+'</span><span class="igi">'+ic+'</span><span>'+t+'</span></li>';}
+function iosSteps(){return '<ol class="igl">'+step(1,SHARE,'Tocá <b>Compartir</b>, el cuadrado con la flecha. Si no lo ves, está dentro del menú <b>···</b>.')+step(2,PLUS,'Bajá y tocá <b>Agregar a inicio</b>.')+step(3,'<b>OK</b>','Tocá <b>Agregar</b>. Listo: queda el ícono de la cancha.')+'</ol>';}
+function andSteps(){return '<ol class="igl">'+step(1,DOTS,'Tocá el menú <b>⋮</b> de Chrome, arriba a la derecha.')+step(2,PLUS,'Elegí <b>Agregar a la pantalla principal</b> o <b>Instalar app</b>.')+step(3,'<b>OK</b>','Confirmá. Listo: queda el ícono de la cancha.')+'</ol>';}
+function openGuide(){
+  var h='';
+  if(inApp){h='<h2>Abrilo en tu navegador</h2><p class="small">Estás dentro de otra app (Instagram, Facebook…). Desde ahí no se puede agregar al inicio.</p><ol class="igl">'+step(1,DOTS,'Tocá el menú <b>···</b> o <b>⋮</b> de arriba.')+step(2,'<b>↗</b>','Elegí <b>Abrir en '+(isIOS?'Safari':'Chrome')+'</b>.')+step(3,PLUS,'Ahí te aparece el botón para agregarla al inicio.')+'</ol><button class="btn" id="instcopy">Copiar el link</button>';}
+  else if(isIOS){h='<h2>Agregala al inicio</h2><p class="small">No ocupa lugar: es un acceso directo que se actualiza solo. En iPhone son tres toques:</p>'+iosSteps()+'<div class="igarrow" aria-hidden="true">↓</div>';}
+  else if(isAndroid){h='<h2>Agregala al inicio</h2>'+andSteps();}
+  else{h='<h2>Agregala al inicio</h2><p class="small">Así lo hace cada cliente desde el celular:</p><h3>iPhone</h3>'+iosSteps()+'<h3>Android</h3><p class="small" style="margin:0">Con un toque en <b>Agregar</b> sale el cartel de Chrome para confirmar. Si no aparece:</p>'+andSteps();}
+  gbody.innerHTML=h+'<button class="btn primary" id="instok">Entendido</button>';
+  guide.classList.add('open');
+  var ok=document.getElementById('instok');ok.focus();ok.onclick=function(){guide.classList.remove('open');};
+  var cp=document.getElementById('instcopy');if(cp)cp.onclick=function(){try{navigator.clipboard.writeText(location.href);cp.textContent='Link copiado';}catch(e){}};
+}
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;show();});
+window.addEventListener('appinstalled',function(){bar.hidden=true;});
+bar.addEventListener('click',function(e){
+  var b=e.target.closest('[data-inst]');if(!b)return;
+  if(b.dataset.inst==='no'){try{localStorage.setItem(K,'1');}catch(err){}bar.hidden=true;return;}
+  if(deferred){deferred.prompt();deferred.userChoice.then(function(r){if(r&&r.outcome==='accepted')bar.hidden=true;deferred=null;});}
+  else openGuide();
+});
+guide.addEventListener('click',function(e){if(e.target===guide)guide.classList.remove('open');});
+show();
+if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(function(){});}
+})();
+
 </script>
 <!--tabs--><script>(function(){
 var CH='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg>';
